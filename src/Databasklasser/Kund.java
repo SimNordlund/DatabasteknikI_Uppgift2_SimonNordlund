@@ -8,9 +8,16 @@ public class Kund {
     private String lösenord;
     private String användarnamn;
 
-    public Kund() {
+    public Kund () {}
+
+    //Används till rapport.
+    public Kund(int ID, String namn, String ort) {
+        this.ID = ID;
+        this.namn = namn;
+        this.ort = ort;
     }
 
+    //Används till kundprogrammet
     public Kund(int ID, String namn, String ort, String lösenord, String användarnamn) {
         this.ID = ID;
         this.namn = namn;

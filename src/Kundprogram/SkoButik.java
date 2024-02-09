@@ -14,7 +14,6 @@ import java.util.Scanner;
 public class SkoButik {
 
     Repositorium r = new Repositorium();
-    Sko s = new Sko();
     Scanner sc = new Scanner(System.in);
 
     public SkoButik() throws IOException, SQLException {
@@ -42,20 +41,11 @@ public class SkoButik {
                     s.getFärg() + ", Pris: " + s.getPris() + " kr, Märke: " + s.getMärke() + ", Storlek: " +
                     s.getStorlek() + "\n")); //Lambda. Göra om med stream?
 
-        /*        String skoBeskrivningar = allaSkor.stream()
-                        .map(sko -> "Skriv " + sko.getID() + " om du vill ha följande sko:\nFärg: " +
-                                sko.getFärg() + ", Pris: " + sko.getPris() + " kr, Märke: " + sko.getMärke() + ", Storlek: " +
-                                sko.getStorlek())
-                        .collect(Collectors.joining("\n")); // Använder "\n" som avgränsare mellan varje sko
-                System.out.println(skoBeskrivningar); */
-
-
             int kundValAvSko = Integer.parseInt(sc.nextLine()); //Fånga fel här måste med catch XD
 
             if (nummerPåBeställning == 0) {
-                List<Beställning> allaBeställningar = r.hittaBeställning();
-                //Taskig försök till lambda nedan? XD Kunde använt .size()?
-                //Typomvandlning nedan.
+                List<Beställning> allaBeställningar = r.hämtaBeställningar();
+                //Taskig försök till lambda nedan? XD Kunde använt .size() Typomvandlning nedan.
                 nummerPåBeställning = (int) allaBeställningar.stream().count() + 1;
             }
 

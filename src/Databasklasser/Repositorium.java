@@ -78,7 +78,7 @@ public class Repositorium {
         return null;
     }
 
-    public List<Beställning> hittaBeställning() {
+    public List<Beställning> hämtaBeställningar() {
         try (Connection c = anslutTillDatabas();
 
              Statement statement = c.createStatement();
@@ -116,4 +116,26 @@ public class Repositorium {
             System.out.println(e.getErrorCode()); //Denna?
         }
     }
+
+    public List<Kund> hämtaKunder() {
+
+        try (Connection c = anslutTillDatabas();
+
+             Statement statement = c.createStatement();
+             ResultSet rs = statement.executeQuery("select ID, Namn, Ort from Kund")
+        ) {
+            List<Kund> allaKunder = new ArrayList<>();
+
+            while (rs.next()) {
+                Kund tempKund = new Kund(rs.getInt("ID"), rs.getString("Namn"), rs.getString("Ort"));
+                allaKunder.add(tempKund);
+            }
+            return allaKunder;
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode()); //Denna?
+        }
+        return null;
+    }
+
 }
