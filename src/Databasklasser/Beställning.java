@@ -2,6 +2,7 @@ package Databasklasser;
 
 import java.time.LocalDate;
 
+
 public class Beställning {
     private int ID;
     private LocalDate datum;
