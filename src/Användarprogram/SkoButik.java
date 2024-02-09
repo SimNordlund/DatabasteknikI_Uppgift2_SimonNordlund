@@ -49,7 +49,7 @@ public class SkoButik {
                 System.out.println(skoBeskrivningar); */
 
 
-            int kundValAvSko = sc.nextInt();
+            int kundValAvSko = sc.nextInt(); //Fånga fel här måste med catch XD
 
             if (nummerPåBeställning == 0) {
                 List<Beställning> allaBeställningar = r.hittaBeställning();
