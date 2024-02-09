@@ -1,10 +1,11 @@
-package Användarprogram;
+package Kundprogram;
+
+import Databasklasser.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 //Spara ner kunduppgifter i Objekt av kund???????
 //Kolla upp sen så alla throws och catches är rätt.
@@ -49,7 +50,7 @@ public class SkoButik {
                 System.out.println(skoBeskrivningar); */
 
 
-            int kundValAvSko = sc.nextInt(); //Fånga fel här måste med catch XD
+            int kundValAvSko = Integer.parseInt(sc.nextLine()); //Fånga fel här måste med catch XD
 
             if (nummerPåBeställning == 0) {
                 List<Beställning> allaBeställningar = r.hittaBeställning();

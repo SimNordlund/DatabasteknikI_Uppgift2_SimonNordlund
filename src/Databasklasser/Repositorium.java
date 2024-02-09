@@ -1,4 +1,4 @@
-package Användarprogram;
+package Databasklasser;
 
 import java.io.FileInputStream;
 import java.io.IOException;

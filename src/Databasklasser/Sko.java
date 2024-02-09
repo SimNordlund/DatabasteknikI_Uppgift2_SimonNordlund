@@ -1,4 +1,4 @@
-package Användarprogram;
+package Databasklasser;
 
 public class Sko {
 

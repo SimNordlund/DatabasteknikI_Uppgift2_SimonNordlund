@@ -1,4 +1,4 @@
-package Användarprogram;
+package Databasklasser;
 
 @FunctionalInterface
 public interface Inloggad {
