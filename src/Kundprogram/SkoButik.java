@@ -51,18 +51,21 @@ public class SkoButik {
             } else if (användareVal.equals("2")) {
 
                 System.out.println("Vilket märke vill du sortera på?");
-                System.out.println("1 - Adidas\n2 - Nike\n3 - Foodora \n4 - Ecco\n5 - Elektrolux\n6 - Nintendo");
+                System.out.println("- Adidas\n- Nike\n- Foodora \n- Ecco\n- Elektrolux\n- Nintendo");
                 String användareValMärke = sc.nextLine();
 
+                if (!användareValMärke.equals("Adidas") && !användareValMärke.equals("Nike") && !användareValMärke.equals("Foodora") &&
+                        !användareValMärke.equals("Ecco") && !användareValMärke.equals("Elektrolux") && !användareValMärke.equals("Nintendo")) {
+                    System.out.println("Du måste välja ett av märkena!");
+                    continue;
+                }
+
                 System.out.println("Ange skons namn för den sko du vill ha!");
+                allaSkor.stream().filter(x -> x.getMärke().equals(användareValMärke)).forEach(x ->
+                        System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
+                                " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
 
-                if (användareValMärke.equals("1")) {
-
-                    allaSkor.stream().filter(x -> x.getMärke().equals("Adidas")).forEach(x ->
-                            System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
-                                    " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
-
-                } else if (användareValMärke.equals("2")) {
+      /*          } else if (användareValMärke.equals("2")) {
 
                     allaSkor.stream().filter(x -> x.getMärke().equals("Nike")).forEach(x ->
                             System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
@@ -92,9 +95,9 @@ public class SkoButik {
                     allaSkor.stream().filter(x -> x.getMärke().equals("Nintendo")).forEach(x ->
                             System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
                                     " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
-                }
+                } */
             } else {
-                System.out.println("Du måste ange 1, 2 eller 3. ");
+                System.out.println("Du måste ange 1, eller 2");
                 continue;
             }
 
