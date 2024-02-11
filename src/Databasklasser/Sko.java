@@ -7,17 +7,27 @@ public class Sko {
     private double pris;
     private String märke;
     private int storlek;
+    private String namn;
     private int lagerID;
 
     public Sko() {
     }
 
-    public Sko(int ID, String färg, double pris, String märke, int storlek) {
+    public Sko(int ID, String färg, double pris, String märke, int storlek, String namn) {
         this.ID = ID;
         this.färg = färg;
         this.pris = pris;
         this.märke = märke;
         this.storlek = storlek;
+        this.namn = namn;
+    }
+
+    public String getNamn() {
+        return namn;
+    }
+
+    public void setNamn(String namn) {
+        this.namn = namn;
     }
 
     public int getID() {

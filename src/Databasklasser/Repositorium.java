@@ -59,14 +59,14 @@ public class Repositorium {
 
              Statement statement = c.createStatement(); //Statement. Pga inga inparametrar.
              //Genom statement kan man exevera SQL, se nedan. Resultset hämtar en rad i taget.
-             ResultSet rs = statement.executeQuery("select ID, Färg, Pris, Märke, Storlek from Sko")
+             ResultSet rs = statement.executeQuery("select ID, Färg, Pris, Märke, Storlek, Namn from Sko")
         ) {
             List<Sko> allaSkor = new ArrayList<>(); //Lista för att lagra skor.
 
             //Loopar igenom raderna. Sparar ner i listan allaSkor.
             while (rs.next()) {
                 Sko tempSko = new Sko(rs.getInt("ID"), rs.getString("Färg"), rs.getDouble("Pris"),
-                        rs.getString("Märke"), rs.getInt("Storlek"));
+                        rs.getString("Märke"), rs.getInt("Storlek"), rs.getString("Namn"));
                 allaSkor.add(tempSko); //Lägger till sko-objekt.
             }
             return allaSkor;
