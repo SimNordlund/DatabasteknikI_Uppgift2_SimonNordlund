@@ -1,4 +1,4 @@
-package Databasklasser;
+package Kundprogram;
 
 @FunctionalInterface
 public interface Inloggad {

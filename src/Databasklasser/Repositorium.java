@@ -112,7 +112,6 @@ public class Repositorium {
             callStatement.setInt(3, skoID);
             callStatement.executeQuery(); //Bara execute?
 
-
         } catch (SQLException e) {
             System.out.println(e.getErrorCode()); //Denna?
         }

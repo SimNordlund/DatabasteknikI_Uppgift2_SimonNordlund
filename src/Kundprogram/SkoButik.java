@@ -5,11 +5,7 @@ import Databasklasser.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 //Kolla upp sen så alla throws och catches är rätt.
 
@@ -20,6 +16,7 @@ public class SkoButik {
 
     public SkoButik() throws IOException, SQLException {
         int nummerPåBeställning = 0;
+        int skoID;
 
         //Frågar efter användarnamn & lösenord.
         System.out.println("Vad är ditt användarnamn?");
@@ -33,69 +30,37 @@ public class SkoButik {
             System.out.println("Du är inte kund. Adjö!");
             System.exit(1);
         }
-
         //Testar eget funktionsgränssnitt & Lambda.
         Inloggad kundMeddelande = () -> System.out.println("Välkommen " + användareKund.getNamn() + "!");
         kundMeddelande.KundInloggad();
 
         while (true) {
             List<Sko> allaSkor = r.presenteraProdukter(); //Hämtar alla skor, lagras i lista av Sko-Objekt.
-
             System.out.println("Ange 1 för att skriva ut samtliga produkter.\nAnge 2 för att sortera på märke.");
-
             String användareVal = sc.nextLine();
-            if (användareVal.equals("1")) {
-                allaSkor.forEach(s -> System.out.println("Skriv skons namn: '" + s.getNamn() + "' om du vill ha följande sko:\nFärg: " +
-                        s.getFärg() + ", Pris: " + s.getPris() + " kr, Märke: " + s.getMärke() + ", Storlek: " +
-                        s.getStorlek() + "\n"));
-            } else if (användareVal.equals("2")) {
 
-                System.out.println("Vilket märke vill du sortera på?");
-                System.out.println("- Adidas\n- Nike\n- Foodora \n- Ecco\n- Elektrolux\n- Nintendo");
+            if (användareVal.equals("1")) { //Om anger 1, skriver ut samtliga produkter
+                allaSkor.forEach(s -> System.out.println("Skriv skons namn: '" + s.getNamn() +
+                        "' om du vill ha följande sko:\nFärg: " + s.getFärg() + ", Pris: " +
+                        s.getPris() + " kr, Märke: " + s.getMärke() + ", Storlek: " +
+                        s.getStorlek() + "\n"));
+            } else if (användareVal.equals("2")) { //Om anger 2, får möjlighet att filtrera.
+                System.out.println("Vilket märke vill du sortera på?\n" +
+                        "- Adidas\n- Nike\n- Foodora \n- Ecco\n- Elektrolux\n- Nintendo");
                 String användareValMärke = sc.nextLine();
 
-                if (!användareValMärke.equals("Adidas") && !användareValMärke.equals("Nike") && !användareValMärke.equals("Foodora") &&
-                        !användareValMärke.equals("Ecco") && !användareValMärke.equals("Elektrolux") && !användareValMärke.equals("Nintendo")) {
+                if (!användareValMärke.equals("Adidas") && !användareValMärke.equals("Nike")
+                        && !användareValMärke.equals("Foodora") &&
+                        !användareValMärke.equals("Ecco") && !användareValMärke.equals("Elektrolux")
+                        && !användareValMärke.equals("Nintendo")) {
                     System.out.println("Du måste välja ett av märkena!");
                     continue;
                 }
-
                 System.out.println("Ange skons namn för den sko du vill ha!");
                 allaSkor.stream().filter(x -> x.getMärke().equals(användareValMärke)).forEach(x ->
-                        System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
+                        System.out.println("Namn: " + x.getNamn() + ", Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
                                 " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
 
-      /*          } else if (användareValMärke.equals("2")) {
-
-                    allaSkor.stream().filter(x -> x.getMärke().equals("Nike")).forEach(x ->
-                            System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
-                                    " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
-
-
-                } else if (användareValMärke.equals("3")) {
-
-                    allaSkor.stream().filter(x -> x.getMärke().equals("Foodora")).forEach(x ->
-                            System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
-                                    " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
-
-                } else if (användareValMärke.equals("4")) {
-
-                    allaSkor.stream().filter(x -> x.getMärke().equals("Ecco")).forEach(x ->
-                            System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
-                                    " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
-
-                } else if (användareValMärke.equals("5")) {
-
-                    allaSkor.stream().filter(x -> x.getMärke().equals("Elektrolux")).forEach(x ->
-                            System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
-                                    " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
-
-                } else if (användareValMärke.equals("6")) {
-
-                    allaSkor.stream().filter(x -> x.getMärke().equals("Nintendo")).forEach(x ->
-                            System.out.println("Namn: " + x.getNamn() + " Färg: " + x.getFärg() + ", Pris: " + x.getPris() +
-                                    " kr, Märke: " + x.getMärke() + ", Storlek: " + x.getStorlek()));
-                } */
             } else {
                 System.out.println("Du måste ange 1, eller 2");
                 continue;
@@ -103,11 +68,10 @@ public class SkoButik {
 
             String kundValAvSko = sc.nextLine(); //Sparar ner kunds val av sko.
 
-            //Filtrerar ut eftersökt sko.
+            //Filtrerar ut eftersökt sko. Letar upp objekt där namn matchar med angiven sko av användare.
             List <Sko> listaSkoID = allaSkor.stream().filter(x -> x.getNamn().equals(kundValAvSko)).toList();
-            int skoID;
             if (!listaSkoID.isEmpty()) {
-                Sko matchandeSko = listaSkoID.get(0); // Antag att vi tar den första matchande skon
+                Sko matchandeSko = listaSkoID.get(0); //Tar den första matchande skon
                 skoID = matchandeSko.getID(); // Hämtar ID
                 // Fortsätt med logiken här...
             } else {
@@ -115,18 +79,16 @@ public class SkoButik {
                 continue;
             }
 
-
             if (nummerPåBeställning == 0) {
                 List<Beställning> allaBeställningar = r.hämtaBeställningar();
-                //Taskig försök till lambda nedan? XD Kunde använt .size() Typomvandlning nedan.
-                nummerPåBeställning = (int) allaBeställningar.stream().count() + 1;
+                nummerPåBeställning = (int) allaBeställningar.stream().count() + 1; //Kunde använt .size() Typomvandlning??
             }
 
+            //Metod som tar in 3 parametrar, kallar på SP i mySQL.
             r.läggTillSko(användareKund.getID(), nummerPåBeställning, skoID);
-            System.out.println("Skon är tillagd i varukorg!");
 
-
-            System.out.println("Skriv Avsluta för avslut. Annars mera dojz!");
+            System.out.println(kundValAvSko + " är tillagd i varukorg!\n" +
+                    "Skriv Avsluta för avslut. Annars skriv något annat!");
             String kundInputAvslut = sc.nextLine().toLowerCase();
             if (kundInputAvslut.equals("avsluta")) {
                 System.exit(0);
