@@ -12,11 +12,11 @@ public class Repositorium {
     private final Properties inställningar = new Properties();
 
     //Konstruktor. Laddar properties när en instans skapas upp av Repositorium.
-    public Repositorium() throws IOException, SQLException {
+    public Repositorium() throws IOException{
         inställningar.load(new FileInputStream("src/inställningar.properties"));
     }
 
-    //Hämtar anslutning till databas
+    //Skapar anslutning till databas
     public Connection anslutTillDatabas() throws SQLException {
         Connection c = DriverManager.getConnection(
                 inställningar.getProperty("connectionString"),
@@ -26,19 +26,19 @@ public class Repositorium {
     }
 
     //Skapar upp kund objekt, kollar om användare medlem.
-    public Kund ärKundMedlem(String användarnamn, String lösenord) throws IOException {
+    public Kund ärKundMedlem(String användarnamn, String lösenord){
 
-        //Connect till databasen med hjälp av uppgifter i Properties.
+        //Öppnar anslutning till databasen.
         try (Connection c = anslutTillDatabas();
 
-             //Skapar PreparedStatement. Pga ska ta in två parametrar.
+             //Skapar PreparedStatement. Pga ska ta in två parametrar. Undvika SQL-Injektion.
              PreparedStatement prepStatement = c.prepareStatement
                      ("select ID, Namn, Ort from Kund where Användarnamn = ? AND Lösenord = ?")
 
         ) {
             prepStatement.setString(1, användarnamn);
             prepStatement.setString(2, lösenord);
-            ResultSet rs = prepStatement.executeQuery(); //Utför query
+            ResultSet rs = prepStatement.executeQuery(); //Utför query/frågan. Lagrar resultatet.
 
             //Om det finns rad körs if-sats, annars returneras null.
             if (rs.next()) {
@@ -47,7 +47,8 @@ public class Repositorium {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode()); //Denna? Se bild OneOne
+            System.out.println(e.getMessage());
+            System.out.println(e.getErrorCode());
         }
         return null;
     }
@@ -57,8 +58,8 @@ public class Repositorium {
 
         try (Connection c = anslutTillDatabas();
 
-             Statement statement = c.createStatement(); //Statement. Pga inga inparametrar.
-             //Genom statement kan man exevera SQL, se nedan. Resultset hämtar en rad i taget.
+             Statement statement = c.createStatement(); //Statementobjekt. För att köra SQL-frågan nedan.
+             //Resultset lagrar resultatet.
              ResultSet rs = statement.executeQuery("select ID, Färg, Pris, Märke, Storlek, Namn from Sko")
         ) {
             List<Sko> allaSkor = new ArrayList<>(); //Lista för att lagra skor.
@@ -72,7 +73,8 @@ public class Repositorium {
             return allaSkor;
 
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode()); //Denna?
+            System.out.println(e.getMessage());
+            System.out.println(e.getErrorCode());
         }
         return null;
     }
@@ -81,9 +83,8 @@ public class Repositorium {
     public List<Beställning> hämtaBeställningar() {
         try (Connection c = anslutTillDatabas();
 
-             Statement statement = c.createStatement();
-                                                            //select count(*) from Beställning sen +1?
-             ResultSet rs = statement.executeQuery("select ID, Datum, KundID from Beställning")
+             Statement statement = c.createStatement(); //Statementobjekt skapas.
+             ResultSet rs = statement.executeQuery("select ID, Datum, KundID from Beställning") //Lagrar resultat i rs.
         ) {
             List<Beställning> allaBeställningar = new ArrayList<>();
 
@@ -95,7 +96,8 @@ public class Repositorium {
             return allaBeställningar;
 
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode()); //Denna?
+            System.out.println(e.getMessage());
+            System.out.println(e.getErrorCode());
         }
         return null;
     }
@@ -103,17 +105,20 @@ public class Repositorium {
     //Lägger till skor i varukorg med hjälp av Stored Procedure.
     public void läggTillSko(int kundID, int beställningID, int skoID) {
 
-        try (Connection c = anslutTillDatabas();
-             //Kallar på SP.
+        try (Connection c = anslutTillDatabas(); //Öppnar db anslutning
+
+             //Förbereder anrop till AddToCart/SP. Vill ha tre parametrar.
              CallableStatement callStatement = c.prepareCall("call AddToCart(?, ?, ?)")
         ) {
+            //Sätter parametrar.
             callStatement.setInt(1, kundID);
             callStatement.setInt(2, beställningID);
             callStatement.setInt(3, skoID);
-            callStatement.executeQuery(); //Bara execute?
+            callStatement.executeQuery(); //Utför query/frågan
 
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode()); //Denna?
+            System.out.println(e.getMessage());
+            System.out.println(e.getErrorCode());
         }
     }
 
@@ -133,7 +138,8 @@ public class Repositorium {
             return allaKunder;
 
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode()); //Denna?
+            System.out.println(e.getMessage());
+            System.out.println(e.getErrorCode());
         }
         return null;
     }

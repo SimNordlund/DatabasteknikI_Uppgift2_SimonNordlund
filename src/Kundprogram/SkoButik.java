@@ -6,19 +6,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-
-//Kolla upp sen så alla throws och catches är rätt.
+import java.util.stream.Collectors;
 
 public class SkoButik {
-
     Repositorium r = new Repositorium();
     Scanner sc = new Scanner(System.in);
 
     public SkoButik() throws IOException, SQLException {
         int nummerPåBeställning = 0;
-        int skoID;
 
-        //Frågar efter användarnamn & lösenord.
         System.out.println("Vad är ditt användarnamn?");
         String kundAnvändarnamn = sc.nextLine();
         System.out.println("Vad är ditt lösenord?");
@@ -36,23 +32,24 @@ public class SkoButik {
 
         while (true) {
             List<Sko> allaSkor = r.presenteraProdukter(); //Hämtar alla skor, lagras i lista av Sko-Objekt.
+            List <String> skoMärken = allaSkor.stream().map(x -> x.getMärke()).distinct().toList();
+
             System.out.println("Ange 1 för att skriva ut samtliga produkter.\nAnge 2 för att sortera på märke.");
             String användareVal = sc.nextLine();
 
             if (användareVal.equals("1")) { //Om anger 1, skriver ut samtliga produkter
-                allaSkor.forEach(s -> System.out.println("Skriv skons namn: '" + s.getNamn() +
-                        "' om du vill ha följande sko:\nFärg: " + s.getFärg() + ", Pris: " +
-                        s.getPris() + " kr, Märke: " + s.getMärke() + ", Storlek: " +
-                        s.getStorlek() + "\n"));
+                allaSkor.forEach(x -> System.out.println("Skriv skons namn: '" + x.getNamn() +
+                        "' om du vill ha följande sko:\nFärg: " + x.getFärg() + ", Pris: " +
+                        x.getPris() + " kr, Märke: " + x.getMärke() + ", Storlek: " +
+                        x.getStorlek() + "\n"));
             } else if (användareVal.equals("2")) { //Om anger 2, får möjlighet att filtrera.
                 System.out.println("Vilket märke vill du sortera på?\n" +
-                        "- Adidas\n- Nike\n- Foodora \n- Ecco\n- Elektrolux\n- Nintendo");
+                        skoMärken.stream().collect(Collectors.joining("\n- ", "- ", "")));
                 String användareValMärke = sc.nextLine();
 
-                if (!användareValMärke.equals("Adidas") && !användareValMärke.equals("Nike")
-                        && !användareValMärke.equals("Foodora") &&
-                        !användareValMärke.equals("Ecco") && !användareValMärke.equals("Elektrolux")
-                        && !användareValMärke.equals("Nintendo")) {
+                //Kollar så att användaren angivit giltigt märke.
+                boolean märkeFinns = skoMärken.stream().anyMatch(märke -> märke.equalsIgnoreCase(användareValMärke));
+                if (!märkeFinns) {
                     System.out.println("Du måste välja ett av märkena!");
                     continue;
                 }
@@ -69,27 +66,26 @@ public class SkoButik {
             String kundValAvSko = sc.nextLine(); //Sparar ner kunds val av sko.
 
             //Filtrerar ut eftersökt sko. Letar upp objekt där namn matchar med angiven sko av användare.
-            List <Sko> listaSkoID = allaSkor.stream().filter(x -> x.getNamn().equals(kundValAvSko)).toList();
-            if (!listaSkoID.isEmpty()) {
-                Sko matchandeSko = listaSkoID.get(0); //Tar den första matchande skon
-                skoID = matchandeSko.getID(); // Hämtar ID
-                // Fortsätt med logiken här...
-            } else {
+            List<Sko> listaSkoID = allaSkor.stream().filter(x -> x.getNamn().equals(kundValAvSko)).toList();
+            if (listaSkoID.isEmpty()) {
                 System.out.println("Ingen sko matchade ditt val. Försök igen.");
                 continue;
             }
+            Sko matchandeSko = listaSkoID.get(0); //Hämtar Sko-Objektet om det finns matchning.
 
+            //Finns det ingen beställning så tar fram nästa beställningsnummer.
             if (nummerPåBeställning == 0) {
                 List<Beställning> allaBeställningar = r.hämtaBeställningar();
-                nummerPåBeställning = (int) allaBeställningar.stream().count() + 1; //Kunde använt .size() Typomvandlning??
+                nummerPåBeställning = allaBeställningar.size()+1; //Kunde använt .size()
             }
 
-            //Metod som tar in 3 parametrar, kallar på SP i mySQL.
-            r.läggTillSko(användareKund.getID(), nummerPåBeställning, skoID);
+            //Metod som tar in 3 parametrar. SP
+            r.läggTillSko(användareKund.getID(), nummerPåBeställning, matchandeSko.getID());
 
             System.out.println(kundValAvSko + " är tillagd i varukorg!\n" +
                     "Skriv Avsluta för avslut. Annars skriv något annat!");
             String kundInputAvslut = sc.nextLine().toLowerCase();
+
             if (kundInputAvslut.equals("avsluta")) {
                 System.exit(0);
             }
