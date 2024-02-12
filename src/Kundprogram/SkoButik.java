@@ -3,7 +3,6 @@ package Kundprogram;
 import Databasklasser.*;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -12,7 +11,7 @@ public class SkoButik {
     Repositorium r = new Repositorium();
     Scanner sc = new Scanner(System.in);
 
-    public SkoButik() throws IOException, SQLException {
+    public SkoButik() throws IOException {
         int nummerPåBeställning = 0;
 
         System.out.println("Vad är ditt användarnamn?");
@@ -91,8 +90,7 @@ public class SkoButik {
             }
         }
     }
-
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) throws IOException{
         SkoButik sb = new SkoButik();
     }
 }

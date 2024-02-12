@@ -33,9 +33,6 @@ public class SäljStöd {
                 .collect(Collectors.groupingBy(b -> b.getKundID(), Collectors.counting()));
         beställningarPerKund.forEach((kundID, antalBeställningar) -> System.out.println(kundID + " " + antalBeställningar));
 
-        Map<Integer, List<Beställning>> testMap123 = allaBeställningar.stream()
-                .collect(Collectors.groupingBy(n -> n.getKundID()));
-
 
         //Rapport skapas och skrivs ut i konsol
         beställningarPerKund.forEach((kundID, antalBeställningar) -> {
@@ -43,6 +40,8 @@ public class SäljStöd {
             System.out.println("Kund: " + kundNamn + ", Antal beställningar: " + antalBeställningar);
         });
         //Fråga 3
+        //Fråga 4
+        //Fråga 5
 
     }
 
