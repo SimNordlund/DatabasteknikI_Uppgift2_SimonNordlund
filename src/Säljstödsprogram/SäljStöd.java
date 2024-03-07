@@ -19,9 +19,6 @@ public class SäljStöd {
         List<Kund> allaKunder = r.hämtaKunder();
         List<Beställning> allaBeställningar = r.hämtaBeställningar();
 
-        //Fråga 1
-        //Fråga 2
-
         //Skapa en Map med ID som nyckel och kundens namn som värde
         Map<Integer, String> IdOchNamn = allaKunder.stream()
                 .collect(Collectors.toMap(k -> k.getID(), k -> k.getNamn()));
@@ -39,10 +36,6 @@ public class SäljStöd {
             String kundNamn = IdOchNamn.get(kundID);
             System.out.println("Kund: " + kundNamn + ", Antal beställningar: " + antalBeställningar);
         });
-        //Fråga 3
-        //Fråga 4
-        //Fråga 5
-
     }
 
     public static void main(String[] args) throws SQLException, IOException {
